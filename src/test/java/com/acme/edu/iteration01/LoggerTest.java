@@ -17,6 +17,7 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
 
     @After
     public void tearDown() {
+        Logger.clear();
         resetOut();
     }
     //endregion

@@ -131,4 +131,8 @@ public class Logger {
         }
         return " (x" + cnt.get() + ")";
     }
+
+    public static void clear(){
+        messageBuffer.clear();
+    }
 }
