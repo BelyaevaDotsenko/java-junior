@@ -1,7 +1,9 @@
 package com.acme.edu;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -11,6 +13,8 @@ public class Logger {
     private static final String STRING = "string: ";
     private static final String CHAR = "char: ";
     private static final String REFERENCE = "reference: ";
+    private static final String PRIMITIVE_ARRAY = "primitives array: ";
+    private static final String PRIMITIVE_MATRIX = "primitives matrix: ";
 
     private static List<Object> messageBuffer = new ArrayList<>();
     //log.int(num)
@@ -26,8 +30,16 @@ public class Logger {
         messageBuffer.add(message);
     }
 
+    public static void log(int[] message) {
+        messageBuffer.add(message);
+    }
+
+    public static void log(int[][] message) {
+        messageBuffer.add(message);
+    }
+
     public static void log(byte message) {
-        print(PRIMITIVE + message);
+        messageBuffer.add(message);
     }
 
     public static void log(String message) {
@@ -76,10 +88,40 @@ public class Logger {
         if (messageBuffer.get(0) instanceof String) {
             printStrings();
         } else if (messageBuffer.get(0) instanceof Byte) {
-            //printBytes();TODO
+            printBytes();
         } else if (messageBuffer.get(0) instanceof Integer) {
             printIntegers();
+        } else if (messageBuffer.get(0) instanceof int[]) {
+            printIntegerArray();
+        } else if (messageBuffer.get(0) instanceof int[][]) {
+            printIntegerMatrix();
         }
+    }
+
+    private static void printIntegerArray() {
+        int[] ans = (int[]) messageBuffer.get(0);
+        print(PRIMITIVE_ARRAY + printArray(ans));
+    }
+
+    private static String printArray(int[] ans) {
+        StringBuilder sb = new StringBuilder();
+        sb.append('{');
+        for (int i: ans){
+            sb.append(i + ", ");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb.deleteCharAt(sb.length()-1);
+        sb.append('}');
+        return sb.toString();
+    }
+
+    private static void printIntegerMatrix() {
+        int[][] ans = (int[][]) messageBuffer.get(0);
+        print(PRIMITIVE_MATRIX + "{");
+        for(int i = 0; i<ans.length; i++){
+            print(printArray(ans[i]));
+        }
+        print("}");
     }
 
     private static void printIntegers() {
@@ -100,6 +142,28 @@ public class Logger {
         }
         result.add(num);
         for(Long ans: result){
+            print(PRIMITIVE + ans);
+        }
+    }
+
+    private static void printBytes() {
+        List<Byte> result = new ArrayList<>();
+        List<Byte> copyBuffer = new ArrayList<>();
+        for(Object obj:messageBuffer){
+            copyBuffer.add(Byte.valueOf((Byte)obj));
+        }
+        byte num=0;
+        for(int i=0;i<copyBuffer.size();i++){
+            if(copyBuffer.get(i)+num > Byte.MAX_VALUE){
+                result.add(num);
+                num=copyBuffer.get(i);
+            }
+            else{
+                num+=copyBuffer.get(i);
+            }
+        }
+        result.add(num);
+        for(Byte ans: result){
             print(PRIMITIVE + ans);
         }
     }
