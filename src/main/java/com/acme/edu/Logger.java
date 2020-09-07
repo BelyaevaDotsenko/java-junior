@@ -152,7 +152,6 @@ public class Logger {
 
     public static void flush() {
         if (messageBuffer.size() == 0) return;
-        //assert bufferHasOneType();
         printBuffer();
         messageBuffer = new ArrayList<>();
     }
