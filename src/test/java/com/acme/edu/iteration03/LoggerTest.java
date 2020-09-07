@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static java.lang.System.lineSeparator;
+
 public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     //region given
     @Before
@@ -22,18 +24,17 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     }
     //endregion
 
-    /*
-    TODO: implement Logger solution to match specification as tests
-
     @Test
     public void shouldLogIntegersArray() throws IOException {
         //region when
-        Logger.log(new int[] {-1, 0, 1});
+        Logger.log(new int[]{-1, 0, 1});
+        Logger.flush();
+
         //endregion
 
         //region then
         assertSysoutEquals(
-            "primitives array: {-1, 0, 1}\n"
+                "primitives array: {-1, 0, 1}" + lineSeparator()
         );
         //endregion
     }
@@ -41,19 +42,23 @@ public class LoggerTest implements SysoutCaptureAndAssertionAbility {
     @Test
     public void shouldLogIntegersMatrix() throws IOException {
         //region when
-        Logger.log(new int[][] {{-1, 0, 1}, {1, 2, 3}, {-1, -2, -3}});
+        Logger.log(new int[][]{{-1, 0, 1}, {1, 2, 3}, {-1, -2, -3}});
+        Logger.flush();
         //endregion
 
         //region then
         assertSysoutEquals(
-            "primitives matrix: {\n" +
-                "{-1, 0, 1}\n" +
-                "{1, 2, 3}\n" +
-                "{-1, -2, -3}\n" +
-            "}\n"
+                "primitives matrix: {" + lineSeparator() +
+                        "{-1, 0, 1}" + lineSeparator() +
+                        "{1, 2, 3}" + lineSeparator() +
+                        "{-1, -2, -3}" + lineSeparator() +
+                        "}" + lineSeparator()
         );
         //endregion
     }
+
+
+    /* TODO: implement Logger solution to match specification as tests
 
     @Test
     public void shouldLogIntegersMulitidimentionalArray() throws IOException {
