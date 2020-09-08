@@ -41,11 +41,14 @@ public class iteration5 implements SysoutCaptureAndAssertionAbility {
                 "primitive: 71" + lineSeparator());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldBeIllegalArgumentException() throws IOException {
         LoggerFacade.log("aaa");
         LoggerFacade.log(1);
         LoggerFacade.flush();
+
+        assertSysoutEquals("string: aaa" + lineSeparator() +
+                "primitive: 1" + lineSeparator());
     }
     @Test
     public void shouldStackOverflow() throws IOException {

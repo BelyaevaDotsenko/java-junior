@@ -3,22 +3,18 @@ package com.acme.edu;
 import com.acme.edu.messagetype.ByteMessage;
 import com.acme.edu.messagetype.IntMessage;
 import com.acme.edu.messagetype.StringMessage;
+import com.acme.edu.saver.ConsoleLoggerSaver;
 
 import java.io.IOException;
 
 public class LoggerFacade {
+    private static LoggerController controller = new LoggerController(new ConsoleLoggerSaver());
 
-    private static LoggerController controller = new LoggerController();
-
-    public static void log(int message) {
+    public static void log(int message) throws IOException {
         controller.log(new IntMessage(message));
     }
 
-    public static void log(byte message) {
-        controller.log(new ByteMessage(message));
-    }
-
-    public static void log(String message) {
+    public static void log(String message) throws IOException {
         controller.log(new StringMessage(message));
     }
 

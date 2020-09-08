@@ -16,33 +16,19 @@ public class LoggerBuffer {
     public String generateOutputValue() {
         switch (bufferType()) {
             case Int:
-                return printInteger();
+                return generatorMessage.generate(buffer.toArray(new IntMessage[0]));
             case Byte:
 //                return printByte();
             case String:
-                return printString();
+                return generatorMessage.generate(buffer.toArray(new StringMessage[0]));
             default:
                 throw new IllegalStateException("bad Input");
         }
     }
 
-    private String printInteger() {
-        return generatorMessage.generate(buffer.toArray(new IntMessage[0]));
-    }
-
-    /*private void printByte() {
-        String resultMessage = ByteMessage.getValue(messageBuffer);
-        loggerSaver.save(resultMessage);
-    }*/
-
-    private String printString() {
-        return generatorMessage.generate(buffer.toArray(new StringMessage[0]));
-    }
-
     public LoggerMessage get(int index) {
         return buffer.get(index);
     }
-
 
     public void add(LoggerMessage loggerMessage) {
         buffer.add(loggerMessage);
