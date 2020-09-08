@@ -12,7 +12,8 @@ public class StringMessage implements LoggerMessage {
         this.messageField = messageField;
     }
 
-    public String getMessageField() {
+    @Override
+    public Object getMessage() {
         return messageField;
     }
 

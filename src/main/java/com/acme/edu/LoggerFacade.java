@@ -1,5 +1,6 @@
 package com.acme.edu;
 
+import com.acme.edu.messagetype.ByteMessage;
 import com.acme.edu.messagetype.IntMessage;
 import com.acme.edu.messagetype.StringMessage;
 
@@ -11,9 +12,9 @@ public class LoggerFacade {
         controller.log(new IntMessage(message));
     }
 
-  /*  public static void log(byte message) {
+    public static void log(byte message) {
         controller.log(new ByteMessage(message));
-    }*/
+    }
 
     public static void log(String message) {
         controller.log(new StringMessage(message));

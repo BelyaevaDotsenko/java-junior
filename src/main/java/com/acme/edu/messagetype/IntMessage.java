@@ -10,7 +10,8 @@ public class IntMessage implements LoggerMessage {
         this.messageField = message;
     }
 
-    public int getMessageField() {
+    @Override
+    public Object getMessage() {
         return messageField;
     }
 

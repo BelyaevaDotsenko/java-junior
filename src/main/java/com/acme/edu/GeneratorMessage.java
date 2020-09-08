@@ -16,7 +16,7 @@ public class GeneratorMessage {
         List<Long> result = new ArrayList<>();
         List<Long> copyBuffer = new ArrayList<>();
         for (IntMessage intMessage : messageBuffer) {
-            copyBuffer.add((long) intMessage.getMessageField());
+            copyBuffer.add(Long.valueOf((Integer)intMessage.getMessage()));
         }
         long num = 0L;
         for (Long aLong : copyBuffer) {
@@ -38,9 +38,9 @@ public class GeneratorMessage {
         StringBuilder resultMessage=new StringBuilder();
         List<String> answer = new ArrayList<>();
         for (int i = 0; i < messageBuffer.length; ) {
-            String str = messageBuffer[i].getMessageField();
+            String str = (String)messageBuffer[i].getMessage();
             int counter = 1;
-            while ((i + counter < messageBuffer.length) && str.equals(messageBuffer[i + counter].getMessageField())) {
+            while ((i + counter < messageBuffer.length) && str.equals(messageBuffer[i + counter].getMessage())) {
                 counter++;
             }
             if (counter > 1) {
