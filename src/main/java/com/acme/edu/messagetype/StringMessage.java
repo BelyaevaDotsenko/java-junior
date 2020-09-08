@@ -9,9 +9,16 @@ import static java.lang.System.lineSeparator;
 public class StringMessage implements LoggerMessage {
     private String messageField;
     private TypeMessage typeMessage = TypeMessage.String;
+    private int counterInCurrentBlock;
+    private int counterBlocks = -1;
+
+
+    private String currentBlock;
 
     public StringMessage(String messageField) {
-        this.messageField = messageField;
+        this.messageField = "";
+        this.currentBlock = messageField;
+        refreshCounting();
     }
 
     @Override
@@ -24,32 +31,42 @@ public class StringMessage implements LoggerMessage {
         return typeMessage;
     }
 
-    private int counter = 1;
-
     @Override
     public void reduce(LoggerMessage loggerMessage) {
-        if (this.getMessage().contains((CharSequence) loggerMessage.getMessage())) {
-            counter++;
-            this.messageField = this.getMessage() + " (x" + counter + ")";
+        if (currentBlock.equals(((StringMessage) loggerMessage).getCurrentBlock())) {
+            counterInCurrentBlock++;
             return;
         }
-        this.messageField = this.getMessage() + lineSeparator() + loggerMessage.getMessage();
+        this.messageField = this.messageField + addDeltaString();
+        currentBlock = ((StringMessage) loggerMessage).getCurrentBlock();
+        refreshCounting();
     }
 
-    String countRepetitions(String messageField) {
-        StringBuilder sb = new StringBuilder(messageField);
-        int minIndex = sb.indexOf(" (x");
-        int maxIndex = sb.lastIndexOf(" (x");
-        if (minIndex < 0) {
-            return messageField;
-        } else {
-            sb.delete(minIndex, maxIndex);
-            return sb.toString();
-        }
+    private void refreshCounting() {
+        this.counterBlocks++;
+        this.counterInCurrentBlock = 1;
+    }
+
+    private String getCount() {
+        if (counterInCurrentBlock > 1) return " (x" + counterInCurrentBlock + ")";
+        return "";
+    }
+
+    private String getComma() {
+        if (counterBlocks > 0) return ", ";
+        return "";
     }
 
     @Override
     public String decorate() {
-        return STRING_PREFIX + countRepetitions(this.getMessage()) + lineSeparator();
+        return STRING_PREFIX + this.getMessage() + addDeltaString() + lineSeparator();
+    }
+
+    private String addDeltaString() {
+        return getComma() + this.currentBlock + getCount();
+    }
+
+    public String getCurrentBlock() {
+        return currentBlock;
     }
 }

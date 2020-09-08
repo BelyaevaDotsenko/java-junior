@@ -84,6 +84,6 @@ public class iteration5 implements SysoutCaptureAndAssertionAbility {
         LoggerFacade.log("aaa");
         LoggerFacade.log("bbb");
         LoggerFacade.flush();
-        assertSysoutEquals("string: aaa, bbb, aaa" + lineSeparator());
+        assertSysoutEquals("string: aaa, bbb" + lineSeparator());
     }
 }
