@@ -30,8 +30,10 @@ public class StringMessage implements LoggerMessage {
     public void reduce(LoggerMessage loggerMessage) {
         if (this.getMessage().contains((CharSequence) loggerMessage.getMessage())) {
             counter++;
+            this.messageField = this.getMessage() + " (x" + counter + ")";
+            return;
         }
-        this.messageField = this.getMessage() + " (x" + counter + ")";
+        this.messageField = this.getMessage() + lineSeparator() + loggerMessage.getMessage();
     }
 
     String countRepetitions(String messageField) {
