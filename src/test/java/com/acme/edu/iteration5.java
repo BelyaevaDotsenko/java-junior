@@ -1,6 +1,5 @@
 package com.acme.edu;
 
-import deprecated.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,18 +68,22 @@ public class iteration5 implements SysoutCaptureAndAssertionAbility {
         assertSysoutEquals("string: aaa" + lineSeparator() +
                 "primitive: 1" + lineSeparator());
     }
-
-    //@Test
-    //blocked
-    public void shouldStackOverflow() throws IOException {
-        LoggerFacade.log(10);
-        LoggerFacade.log(Integer.MAX_VALUE);
-        LoggerFacade.log(5);
+    //FIXME
+    @Test
+    public void thisTestFailsNeedFix() throws IOException {
+        LoggerFacade.log("aaa");
+        LoggerFacade.log("bbb");
+        LoggerFacade.log("aaa");
         LoggerFacade.flush();
+        assertSysoutEquals("string: aaa, bbb, aaa" + lineSeparator());
+    }
 
-        assertSysoutEquals("primitive: 10" + lineSeparator() +
-                "primitive: " + (Integer.MAX_VALUE - 1) + lineSeparator() +
-                "primitive: 5" + lineSeparator());
-
+    //FIXME
+    @Test
+    public void thisTestFailsTooNeedFix() throws IOException {
+        LoggerFacade.log("aaa");
+        LoggerFacade.log("bbb");
+        LoggerFacade.flush();
+        assertSysoutEquals("string: aaa, bbb, aaa" + lineSeparator());
     }
 }
