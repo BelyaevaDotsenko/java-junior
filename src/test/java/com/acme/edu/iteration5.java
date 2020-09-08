@@ -1,5 +1,6 @@
 package com.acme.edu;
 
+import deprecated.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,13 +11,13 @@ import static java.lang.System.lineSeparator;
 
 public class iteration5 implements SysoutCaptureAndAssertionAbility {
     @Before
-    public void setUpSystemOut() {
+    public void setUpSystemOut() throws IOException {
         resetOut();
         captureSysout();
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws IOException {
         resetOut();
     }
 

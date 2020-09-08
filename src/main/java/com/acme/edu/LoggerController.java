@@ -17,7 +17,10 @@ public class LoggerController {
 
     public void flush() throws IOException {
         if (loggerBuffer.size() == 0) return;
-        if (notOneType()) throw new IllegalArgumentException("Not one type in sequence");
+        if (notOneType()) {
+            loggerBuffer.clear();
+            throw new IllegalArgumentException("Not one type in sequence");
+        }
         loggerSaver.save(loggerBuffer.generateOutputValue());
         loggerBuffer.clear();
     }
