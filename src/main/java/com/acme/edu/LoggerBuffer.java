@@ -13,14 +13,6 @@ public class LoggerBuffer {
     private GeneratorMessage generatorMessage = new GeneratorMessage();
 
 
-    public void add(LoggerMessage loggerMessage) {
-        buffer.add(loggerMessage);
-    }
-
-    public TypeMessage bufferType() {
-        return getType(0);
-    }
-
     public String generateOutputValue() {
         switch (bufferType()) {
             case Int:
@@ -30,7 +22,7 @@ public class LoggerBuffer {
             case String:
                 return printString();
             default:
-                throw new IllegalArgumentException("bad Input");
+                throw new IllegalStateException("bad Input");
         }
     }
 
@@ -51,12 +43,21 @@ public class LoggerBuffer {
         return buffer.get(index);
     }
 
+
+    public void add(LoggerMessage loggerMessage) {
+        buffer.add(loggerMessage);
+    }
+
     public TypeMessage getType(int index) {
         return buffer.get(index).getTypeMessage();
     }
 
     public int size() {
         return buffer.size();
+    }
+
+    public TypeMessage bufferType() {
+        return getType(0);
     }
 
     public void clear() {

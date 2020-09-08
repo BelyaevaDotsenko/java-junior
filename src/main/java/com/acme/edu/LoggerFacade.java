@@ -4,6 +4,8 @@ import com.acme.edu.messagetype.ByteMessage;
 import com.acme.edu.messagetype.IntMessage;
 import com.acme.edu.messagetype.StringMessage;
 
+import java.io.IOException;
+
 public class LoggerFacade {
 
     private static LoggerController controller = new LoggerController();
@@ -20,7 +22,7 @@ public class LoggerFacade {
         controller.log(new StringMessage(message));
     }
 
-    public static void flush() {
+    public static void flush() throws IOException {
         controller.flush();
     }
 }

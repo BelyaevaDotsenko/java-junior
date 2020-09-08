@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static java.lang.System.lineSeparator;
 
 public class iteration5 implements SysoutCaptureAndAssertionAbility {
@@ -19,7 +21,7 @@ public class iteration5 implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldLogStrings() {
+    public void shouldLogStrings() throws IOException {
         LoggerFacade.log("aaa");
         LoggerFacade.log("aaa");
         LoggerFacade.log("aaa");
@@ -39,14 +41,13 @@ public class iteration5 implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldBeException() {
+    public void shouldBeIllegalArgumentException() throws IOException {
         LoggerFacade.log("aaa");
         LoggerFacade.log(1);
         LoggerFacade.flush();
     }
-
     @Test
-    public void shouldStackOverflow() {
+    public void shouldStackOverflow() throws IOException {
         LoggerFacade.log(-1);
         LoggerFacade.log(Integer.MAX_VALUE);
         LoggerFacade.log(5);

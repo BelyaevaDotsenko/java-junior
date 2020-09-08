@@ -1,8 +1,10 @@
-package com.acme.edu;
+package deprecated;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Deprecated
 public class Logger {
     private static final String PRIMITIVE_PREFIX = "primitive: ";
     private static final String STRING_PREFIX = "string: ";
