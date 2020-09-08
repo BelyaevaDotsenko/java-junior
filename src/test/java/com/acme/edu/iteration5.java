@@ -68,6 +68,7 @@ public class iteration5 implements SysoutCaptureAndAssertionAbility {
         assertSysoutEquals("string: aaa" + lineSeparator() +
                 "primitive: 1" + lineSeparator());
     }
+
     //FIXME
     @Test
     public void thisTestFailsNeedFix() throws IOException {
@@ -85,5 +86,27 @@ public class iteration5 implements SysoutCaptureAndAssertionAbility {
         LoggerFacade.log("bbb");
         LoggerFacade.flush();
         assertSysoutEquals("string: aaa, bbb" + lineSeparator());
+    }
+
+    @Test
+    public void hardTest() throws IOException {
+        LoggerFacade.log("aaa");
+        LoggerFacade.log("aa");
+        LoggerFacade.log(1);
+        LoggerFacade.log(-1);
+        LoggerFacade.flush();
+        LoggerFacade.log(8);
+        LoggerFacade.log(-1);
+        LoggerFacade.log("bbb");
+        LoggerFacade.log("bbb");
+        LoggerFacade.log(-1);
+        LoggerFacade.log("bbb");
+        LoggerFacade.flush();
+        assertSysoutEquals("string: aaa, aa" + lineSeparator() +
+                "primitive: 0" + lineSeparator() +
+                "primitive: 7" + lineSeparator() +
+                "string: bbb (x2)" + lineSeparator() +
+                "primitive: -1" + lineSeparator() +
+                "string: bbb" + lineSeparator());
     }
 }
