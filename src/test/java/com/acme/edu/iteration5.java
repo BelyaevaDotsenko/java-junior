@@ -43,7 +43,6 @@ public class iteration5 implements SysoutCaptureAndAssertionAbility {
         LoggerFacade.log("aaa");
         LoggerFacade.log(1);
         LoggerFacade.flush();
-
     }
 
     @Test

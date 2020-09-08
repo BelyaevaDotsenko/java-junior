@@ -11,7 +11,7 @@ public class IntMessage implements LoggerMessage {
     }
 
     @Override
-    public Object getMessage() {
+    public Integer getMessage() {
         return messageField;
     }
 

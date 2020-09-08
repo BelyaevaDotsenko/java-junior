@@ -1,6 +1,5 @@
 package com.acme.edu.messagetype;
 
-import com.acme.edu.utils.MessagePrefix;
 import com.acme.edu.utils.TypeMessage;
 
 
@@ -13,7 +12,7 @@ public class StringMessage implements LoggerMessage {
     }
 
     @Override
-    public Object getMessage() {
+    public String getMessage() {
         return messageField;
     }
 

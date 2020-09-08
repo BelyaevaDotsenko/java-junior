@@ -10,7 +10,7 @@ public class ByteMessage implements LoggerMessage {
     }
 
     @Override
-    public Object getMessage() {
+    public Byte getMessage() {
         return null;
     }
 
