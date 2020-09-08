@@ -1,6 +1,5 @@
 package com.acme.edu;
 
-import com.acme.edu.messagetype.ByteMessage;
 import com.acme.edu.messagetype.IntMessage;
 import com.acme.edu.messagetype.StringMessage;
 import com.acme.edu.saver.ConsoleLoggerSaver;

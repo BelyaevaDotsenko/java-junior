@@ -1,33 +1,27 @@
 package com.acme.edu;
 
-import com.acme.edu.messagetype.IntMessage;
 import com.acme.edu.messagetype.LoggerMessage;
-import com.acme.edu.messagetype.StringMessage;
 import com.acme.edu.utils.TypeMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class LoggerBuffer {
     private List<LoggerMessage> buffer = new ArrayList<>();
-    private GeneratorMessage generatorMessage = new GeneratorMessage();
-
 
     public String generateOutputValue() {
-        switch (bufferType()) {
-            case Int:
-                return generatorMessage.generate(buffer.toArray(new IntMessage[0]));
-            case Byte:
-//                return printByte();
-            case String:
-                return generatorMessage.generate(buffer.toArray(new StringMessage[0]));
-            default:
-                throw new IllegalStateException("bad Input");
+        LoggerMessage message = buffer.get(0);
+        StringBuilder result = new StringBuilder();
+        for (int i = 1; i < buffer.size(); i++) {
+            if (buffer.get(i).hasOneType(message)) {
+                message.reduce(buffer.get(i));
+            } else {
+                result.append(message.getMessage());
+                message = buffer.get(i);
+            }
         }
-    }
-
-    public LoggerMessage get(int index) {
-        return buffer.get(index);
+        return message.decorate();
     }
 
     public void add(LoggerMessage loggerMessage) {

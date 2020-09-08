@@ -1,7 +1,6 @@
 package com.acme.edu;
 
 import com.acme.edu.messagetype.LoggerMessage;
-import com.acme.edu.saver.ConsoleLoggerSaver;
 import com.acme.edu.saver.LoggerSaver;
 
 import java.io.IOException;
@@ -21,7 +20,8 @@ public class LoggerController {
 
     public void flush() throws IOException {
         if (loggerBuffer.size() == 0) return;
-        loggerSaver.save(loggerBuffer.generateOutputValue());
+        String res = loggerBuffer.generateOutputValue();
+        loggerSaver.save(res);
         loggerBuffer.clear();
     }
 }
