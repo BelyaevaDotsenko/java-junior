@@ -2,19 +2,20 @@ package com.acme.edu.messagetype;
 
 import com.acme.edu.utils.TypeMessage;
 
-import java.util.List;
-
-public class IntMessage extends NumberMessage {
+public class IntMessage implements LoggerMessage {
     private int messageField;
+    private final TypeMessage typeMessage = TypeMessage.Int;
 
     public IntMessage(int message) {
-        super(TypeMessage.Int);
         this.messageField = message;
     }
 
-    public static String getValue(List<LoggerMessage> messageBuffer) {
-        //TODO super
-        return null;
+    public int getMessageField() {
+        return messageField;
     }
 
+    @Override
+    public TypeMessage getTypeMessage() {
+        return typeMessage;
+    }
 }
