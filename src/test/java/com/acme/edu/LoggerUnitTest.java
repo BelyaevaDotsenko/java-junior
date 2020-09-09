@@ -9,12 +9,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 import static java.lang.System.lineSeparator;
 import static org.mockito.Mockito.*;
 
 public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
+    String fileName = "OutputFileOnlyForLoggerTest.txt";
 
     @Before
     public void init() {
@@ -24,6 +26,8 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
 
     @After
     public void end() {
+        File file = new File(fileName);
+        if(file.exists()) file.delete();
         resetOut();
     }
 
@@ -83,7 +87,6 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
 
     @Test
     public void shouldSavedIntoFileWhenLoggerFacadeCalled() throws IOException {
-        String fileName = "output.txt";
 
         LoggerSaver loggerSaver = new FileLoggerSaver(fileName);
         LoggerController loggerController = new LoggerController(loggerSaver);
