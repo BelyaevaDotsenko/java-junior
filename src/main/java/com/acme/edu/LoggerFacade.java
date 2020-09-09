@@ -7,7 +7,7 @@ import com.acme.edu.saver.ConsoleLoggerSaver;
 import java.io.IOException;
 
 public class LoggerFacade {
-    private static LoggerController controller = new LoggerController(new ConsoleLoggerSaver());
+    static LoggerController controller = new LoggerController(new ConsoleLoggerSaver());
 
     public static void log(int message) throws IOException {
         controller.log(new IntMessage(message));
