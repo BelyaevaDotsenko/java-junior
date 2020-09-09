@@ -14,7 +14,7 @@ public class LoggerController {
     }
 
     public void log(LoggerMessage loggerMessage) throws IOException {
-        if (loggerBuffer.size() != 0 && loggerBuffer.bufferType() != loggerMessage.getTypeMessage()) flush();
+        //if (loggerBuffer.size() != 0 && loggerBuffer.bufferType() != loggerMessage.getTypeMessage()) flush();
         loggerBuffer.add(loggerMessage);
     }
 
