@@ -2,17 +2,30 @@ package com.acme.edu;
 
 import com.acme.edu.messagetype.IntMessage;
 import com.acme.edu.messagetype.StringMessage;
+import com.acme.edu.saver.ConsoleLoggerSaver;
 import com.acme.edu.saver.FileLoggerSaver;
 import com.acme.edu.saver.LoggerSaver;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.io.IOException;
 
 import static java.lang.System.lineSeparator;
 import static org.mockito.Mockito.*;
 
-public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility{
+public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
+
+    @Before
+    public void init() {
+        resetOut();
+        captureSysout();
+    }
+
+    @After
+    public void end() {
+        resetOut();
+    }
 
     @Test
     public void shouldWriteNothingWhenNothingLogged() throws IOException {
@@ -55,24 +68,24 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility{
                 "string: bb" + lineSeparator());
     }
 
-    /*@Test
+    @Test
     public void shouldSavedIntoConsoleWhenLoggerFacadeCalled() throws IOException {
-        LoggerSaver loggerSaver = mock(ConsoleLoggerSaver.class);
+        LoggerSaver loggerSaver = new ConsoleLoggerSaver();
         LoggerController loggerController = new LoggerController(loggerSaver);
         LoggerFacade.controller = loggerController;
-        LoggerFacade.log(1);
-        LoggerFacade.log(2);
+        LoggerFacade.log("aaa");
+        LoggerFacade.log("bbb");
+        LoggerFacade.log("aaa");
         LoggerFacade.flush();
+        assertSysoutEquals("string: aaa, bbb, aaa" + lineSeparator());
+    }
 
-    }*/
-    @Mock
-    LoggerSaver loggerSaver;
 
     @Test
     public void shouldSavedIntoFileWhenLoggerFacadeCalled() throws IOException {
         String fileName = "output.txt";
-        loggerSaver = new FileLoggerSaver(fileName);
 
+        LoggerSaver loggerSaver = new FileLoggerSaver(fileName);
         LoggerController loggerController = new LoggerController(loggerSaver);
         LoggerFacade.controller = loggerController;
         LoggerFacade.log(1);
