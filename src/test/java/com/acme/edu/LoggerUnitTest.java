@@ -12,6 +12,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
+import com.acme.edu.saver.SaverExceptions;
+
 import static java.lang.System.lineSeparator;
 import static org.mockito.Mockito.*;
 
@@ -32,7 +34,7 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldWriteNothingWhenNothingLogged() throws IOException {
+    public void shouldWriteNothingWhenNothingLogged() throws SaverExceptions, IOException{
         LoggerSaver loggerSaver = mock(LoggerSaver.class);
         LoggerController loggerController = new LoggerController(loggerSaver);
         loggerController.flush();
@@ -40,7 +42,7 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldWriteStringsWhenLoggedJustStrings() throws IOException {
+    public void shouldWriteStringsWhenLoggedJustStrings() throws SaverExceptions, IOException {
         LoggerSaver loggerSaver = mock(LoggerSaver.class);
         LoggerController loggerController = new LoggerController(loggerSaver);
         loggerController.log(new StringMessage("aa"));
@@ -51,7 +53,7 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldWriteIntsWhenLoggedJustInts() throws IOException {
+    public void shouldWriteIntsWhenLoggedJustInts() throws SaverExceptions, IOException {
         LoggerSaver loggerSaver = mock(LoggerSaver.class);
         LoggerController loggerController = new LoggerController(loggerSaver);
         loggerController.log(new IntMessage(1));
@@ -62,7 +64,7 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldWriteIntsAndStringsWhenLoggedBoth() throws IOException {
+    public void shouldWriteIntsAndStringsWhenLoggedBoth() throws SaverExceptions, IOException {
         LoggerSaver loggerSaver = mock(LoggerSaver.class);
         LoggerController loggerController = new LoggerController(loggerSaver);
         loggerController.log(new IntMessage(1));
@@ -73,7 +75,7 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
     }
 
     @Test
-    public void shouldSavedIntoConsoleWhenLoggerFacadeCalled() throws IOException {
+    public void shouldSavedIntoConsoleWhenLoggerFacadeCalled() throws SaverExceptions {
         LoggerSaver loggerSaver = new ConsoleLoggerSaver();
         LoggerController loggerController = new LoggerController(loggerSaver);
         LoggerFacade.controller = loggerController;
@@ -86,7 +88,7 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
 
 
     @Test
-    public void shouldSavedIntoFileWhenLoggerFacadeCalled() throws IOException {
+    public void shouldSavedIntoFileWhenLoggerFacadeCalled() throws SaverExceptions, IOException {
 
         LoggerSaver loggerSaver = new FileLoggerSaver(fileName);
         LoggerController loggerController = new LoggerController(loggerSaver);
@@ -97,5 +99,15 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
 
         assertFileContains(fileName, "primitive: 3");
 
+    }
+
+    @Test(expected = SaverExceptions.class)
+    public void shouldThrowsException() throws SaverExceptions, IOException {
+        LoggerSaver loggerSaver = mock(FileLoggerSaver.class);
+        LoggerController loggerController = new LoggerController(loggerSaver);
+        doThrow(SaverExceptions.class).when(loggerSaver).save(any());
+
+        loggerController.log(new IntMessage(1));
+        loggerController.flush();
     }
 }
