@@ -6,7 +6,6 @@ import com.acme.edu.saver.SaverExceptions;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 
 public class LoggerController {
     private final Iterable<LoggerSaver> loggerSaver;
@@ -23,15 +22,21 @@ public class LoggerController {
     public void flush() throws SaverExceptions {
         if (loggerBuffer.isEmpty()) return;
         String res = loggerBuffer.generateOutputValue();
+        Exception exceptionDuringSaving = null;
         for (LoggerSaver loggerSaver : loggerSaver) {
             try {
                 loggerSaver.save(res);
             } catch (IOException e) {
-                throw new SaverExceptions(e);
+                if (exceptionDuringSaving != null)
+                    exceptionDuringSaving.addSuppressed(e);
+                else
+                    exceptionDuringSaving = new Exception(e);
             } finally {
                 loggerBuffer.clear();
             }
         }
+        if (exceptionDuringSaving != null)
+            throw new SaverExceptions("exceptions from bankomat c:", exceptionDuringSaving);
     }
 
     public void close() throws Exception {

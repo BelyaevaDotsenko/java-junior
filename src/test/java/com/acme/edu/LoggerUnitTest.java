@@ -127,4 +127,21 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
         assertFileContains(fileName, "primitive: 1" + lineSeparator() + "string: abc" + lineSeparator());
         assertSysoutContains("primitive: 1" + lineSeparator() + "string: abc");
     }
+    @Test(expected = SaverExceptions.class)
+    public void shouldLogIntoConsoleAndFailInFile() throws SaverExceptions, Exception {
+        LoggerSaver fileLoggerSaver = mock(FileLoggerSaver.class);
+        doThrow(IOException.class).when(fileLoggerSaver).save(any());
+        LoggerSaver consoleLoggerSaver = new ConsoleLoggerSaver();
+
+        LoggerController loggerController = new LoggerController(fileLoggerSaver, consoleLoggerSaver);
+        LoggerFacade.controller = loggerController;
+
+        LoggerFacade.log(1);
+        LoggerFacade.log(2);
+        LoggerFacade.log("33");
+        LoggerFacade.flush();
+        LoggerFacade.close();
+
+        assertSysoutContains("primitive: 3" + lineSeparator() + "string: 33");
+    }
 }
