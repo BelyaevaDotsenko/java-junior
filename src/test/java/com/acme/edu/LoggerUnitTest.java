@@ -88,7 +88,7 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
 
 
     @Test
-    public void shouldSavedIntoFileWhenLoggerFacadeCalled() throws SaverExceptions, IOException {
+    public void shouldSavedIntoFileWhenLoggerFacadeCalled() throws SaverExceptions, Exception {
 
         LoggerSaver loggerSaver = new FileLoggerSaver(fileName);
         LoggerController loggerController = new LoggerController(loggerSaver);
@@ -96,8 +96,9 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
         LoggerFacade.log(1);
         LoggerFacade.log(2);
         LoggerFacade.flush();
+        LoggerFacade.close();
 
-        assertFileContains(fileName, "primitive: 3");
+        assertFileContains(fileName, "primitive: 3" + lineSeparator());
 
     }
 
@@ -105,9 +106,25 @@ public class LoggerUnitTest implements SysoutCaptureAndAssertionAbility {
     public void shouldThrowsException() throws SaverExceptions, IOException {
         LoggerSaver loggerSaver = mock(FileLoggerSaver.class);
         LoggerController loggerController = new LoggerController(loggerSaver);
-        doThrow(SaverExceptions.class).when(loggerSaver).save(any());
+        doThrow(IOException.class).when(loggerSaver).save(any());
 
         loggerController.log(new IntMessage(1));
         loggerController.flush();
+    }
+
+    @Test
+    public void shouldLogIntoTwoChannels() throws SaverExceptions, Exception {
+        LoggerSaver consoleSaver = new ConsoleLoggerSaver();
+        LoggerSaver fileSaver = new FileLoggerSaver(fileName);
+
+        LoggerController controller = new LoggerController(consoleSaver, fileSaver);
+
+        controller.log(new IntMessage(1));
+        controller.log(new StringMessage("abc"));
+        controller.flush();
+        controller.close();
+
+        assertFileContains(fileName, "primitive: 1" + lineSeparator() + "string: abc" + lineSeparator());
+        assertSysoutContains("primitive: 1" + lineSeparator() + "string: abc");
     }
 }

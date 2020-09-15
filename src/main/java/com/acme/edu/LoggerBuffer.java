@@ -35,4 +35,8 @@ public class LoggerBuffer {
     public void clear() {
         buffer.clear();
     }
+
+    public boolean isEmpty(){
+        return buffer.isEmpty();
+    }
 }

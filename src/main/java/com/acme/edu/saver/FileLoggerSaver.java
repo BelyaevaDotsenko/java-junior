@@ -1,22 +1,33 @@
 package com.acme.edu.saver;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class FileLoggerSaver implements LoggerSaver {
-    private String fileName;
+    private BufferedWriter bw;
 
     public FileLoggerSaver(String fileName) {
-        this.fileName = fileName;
+        try {
+            bw = new BufferedWriter(new OutputStreamWriter(
+                    new BufferedOutputStream(
+                            new FileOutputStream(fileName)
+                    )
+            ));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void save(String message) throws SaverExceptions, IOException {
-        try (FileWriter fileWriter = new FileWriter(fileName)){
-            fileWriter.write(message);
+    public void save(String message) throws IOException {
+        try {
+            bw.write(message);
         } catch(IOException e){
             throw e;
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+        bw.close();
     }
 }
