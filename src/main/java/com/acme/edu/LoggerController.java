@@ -6,6 +6,9 @@ import com.acme.edu.saver.SaverExceptions;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 public class LoggerController {
     private final Iterable<LoggerSaver> loggerSaver;
@@ -22,21 +25,24 @@ public class LoggerController {
     public void flush() throws SaverExceptions {
         if (loggerBuffer.isEmpty()) return;
         String res = loggerBuffer.generateOutputValue();
-        Exception exceptionDuringSaving = null;
-        for (LoggerSaver loggerSaver : loggerSaver) {
-            try {
-                loggerSaver.save(res);
-            } catch (IOException e) {
-                if (exceptionDuringSaving != null)
-                    exceptionDuringSaving.addSuppressed(e);
-                else
-                    exceptionDuringSaving = new Exception(e);
-            } finally {
-                loggerBuffer.clear();
-            }
-        }
-        if (exceptionDuringSaving != null)
-            throw new SaverExceptions("exceptions from bankomat c:", exceptionDuringSaving);
+        final List<Exception> exceptionDuringSaving = new LinkedList<Exception>();
+        loggerSaver.forEach(
+                loggerSaver -> {
+                    try {
+                        loggerSaver.save(res);
+                    } catch (IOException e) {
+                        exceptionDuringSaving.add(e);
+                    } finally {
+                        loggerBuffer.clear();
+                    }
+                }
+        );
+        Optional<Exception> optionalException = exceptionDuringSaving.stream().reduce((e1, e2) -> {
+            e1.addSuppressed(e2);
+            return e1;
+        });
+        if (optionalException.isPresent())
+            throw new SaverExceptions("exception from bankomat c:", optionalException.get());
     }
 
     public void close() throws Exception {
