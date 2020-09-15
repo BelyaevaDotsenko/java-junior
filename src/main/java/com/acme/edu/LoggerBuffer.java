@@ -17,30 +17,26 @@ public class LoggerBuffer {
             if (buffer.get(i).hasOneType(message)) {
                 message.reduce(buffer.get(i));
             } else {
-                result.append(message.getMessage());
+                result.append(message.decorate());
                 message = buffer.get(i);
             }
         }
-        return message.decorate();
+        return result.append(message.decorate()).toString();
     }
 
     public void add(LoggerMessage loggerMessage) {
         buffer.add(loggerMessage);
     }
 
-    public TypeMessage getType(int index) {
-        return buffer.get(index).getTypeMessage();
-    }
-
     public int size() {
         return buffer.size();
     }
 
-    public TypeMessage bufferType() {
-        return getType(0);
-    }
-
     public void clear() {
         buffer.clear();
+    }
+
+    public boolean isEmpty(){
+        return buffer.isEmpty();
     }
 }

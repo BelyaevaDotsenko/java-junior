@@ -6,4 +6,9 @@ public class ConsoleLoggerSaver implements LoggerSaver{
     public void save(String message){
         System.out.print(message);
     }
+
+    @Override
+    public void close() throws Exception {
+        System.out.close();
+    }
 }
